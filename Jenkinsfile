@@ -1,9 +1,13 @@
 pipeline{
     agent any
+    tools {
+        maven 'maven'
+    }
     stages{
         stage("Test Code"){
             steps{
                 echo "========Testing Code========"
+                sh 'maven --verion'
             }
             }
 
