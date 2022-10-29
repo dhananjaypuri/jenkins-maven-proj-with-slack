@@ -11,18 +11,20 @@ pipeline{
                 echo "========Testing Code========"
                 sh 'mvn --version'
                 sh 'mvn test'
+                slackSend channel: 'jenkins', message: 'Code Test Started'
             }
             }
 
         stage("Build Code"){
             steps{
-                echo "========Building Code========"
+                slackSend channel: 'jenkins', message: 'Build Started'
                 sh 'mvn package'
             }
             }
 
         stage("Deploy on Test Env"){
             steps{
+                slackSend channel: 'jenkins', message: 'Deploying on test'
                 deploy adapters: [tomcat9(credentialsId: 'tomcatdetail', path: '', url: 'http://54.149.63.125:8080')], contextPath: '/app', onFailure: false, war: '**/*.war'
             }
             }
@@ -39,7 +41,7 @@ pipeline{
             echo "========always========"
         }
         success{
-            echo "========pipeline executed successfully ========"
+            slackSend channel: 'jenkins', message: 'App deployed Successfully !!!!!'
         }
         failure{
             echo "========pipeline execution failed========"
